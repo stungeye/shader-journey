@@ -8,7 +8,7 @@ module.exports = {
   projectName: "docusaurus", // Usually your repo name.
   themeConfig: {
     navbar: {
-      title: "🏃‍♂️ Shader Journey",
+      title: "💎 Shader Journey",
       links: [
         {
           to: "docs/",
@@ -28,50 +28,51 @@ module.exports = {
       style: "dark",
       links: [
         {
-          title: "Docs",
+          title: "Shader Journey",
           items: [
             {
-              label: "Style Guide",
+              label: "Shaders (Start Here)",
               to: "docs/",
             },
             {
-              label: "Second Doc",
-              to: "docs/doc2/",
-            },
-          ],
-        },
-        {
-          title: "Community",
-          items: [
-            {
-              label: "Stack Overflow",
-              href: "https://stackoverflow.com/questions/tagged/docusaurus",
-            },
-            {
-              label: "Discord",
-              href: "https://discordapp.com/invite/docusaurus",
-            },
-            {
-              label: "Twitter",
-              href: "https://twitter.com/docusaurus",
-            },
-          ],
-        },
-        {
-          title: "More",
-          items: [
-            {
               label: "Blog",
-              to: "blog",
+              to: "blog/",
+            },
+          ],
+        },
+        {
+          title: "Me Elsewhere",
+          items: [
+            {
+              label: "Shader Toy @stungeye",
+              href: "https://www.shadertoy.com/user/stungeye",
             },
             {
-              label: "GitHub",
-              href: "https://github.com/facebook/docusaurus",
+              label: "Twitter @stungeye",
+              href: "https://twitter.com/stungeye",
+            },
+            {
+              label: "GitHub @stungeye",
+              href: "https://github.com/stungeye",
+            },
+          ],
+        },
+        {
+          title: "External Resources",
+          items: [
+            {
+              label: "The Book of Shaders",
+              href: "https://thebookofshaders.com",
+            },
+            {
+              label: "Official OpenGL Shading Language Wiki",
+              href:
+                "https://www.khronos.org/opengl/wiki/OpenGL_Shading_Language",
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `<a href="https://unlicense.org">Unlicensed</a> by <a href="https://stungeye.com">Kyle Geske</a> ${new Date().getFullYear()}. Website built with Docusaurus.`,
     },
   },
   presets: [
@@ -83,13 +84,12 @@ module.exports = {
           homePageId: "2-hello-gradient",
           sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
-          editUrl: "https://github.com/stungeye/shader-journey/tree/master/",
+          editUrl: "https://github.com/stungeye/shader-journey/edit/master/",
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
-          editUrl:
-            "https://github.com/stungeye/shader-journey/tree/master/blog",
+          editUrl: "https://github.com/stungeye/shader-journey/edit/master/",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
