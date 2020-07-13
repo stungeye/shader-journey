@@ -11,14 +11,14 @@ module.exports = {
       title: "🏃‍♂️ Shader Journey",
       links: [
         {
-          to: "shaders/",
-          activeBasePath: "shaders",
+          to: "docs/",
+          activeBasePath: "docs",
           label: "Shaders",
           position: "left",
         },
         { to: "blog", label: "Blog", position: "left" },
         {
-          href: "https://github.com/facebook/docusaurus",
+          href: "https://github.com/stungeye/shader-journey",
           label: "GitHub",
           position: "right",
         },
@@ -80,17 +80,16 @@ module.exports = {
       {
         docs: {
           // It is recommended to set document id as docs home page (`docs/` path).
-          homePageId: "doc1",
+          homePageId: "2-hello-gradient",
           sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
-          editUrl:
-            "https://github.com/facebook/docusaurus/edit/master/website/",
+          editUrl: "https://github.com/stungeye/shader-journey/tree/master/",
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           editUrl:
-            "https://github.com/facebook/docusaurus/edit/master/website/blog/",
+            "https://github.com/stungeye/shader-journey/tree/master/blog",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),

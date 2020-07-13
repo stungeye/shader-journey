@@ -1,6 +1,5 @@
 module.exports = {
   someSidebar: {
-    Docusaurus: ['doc1', 'doc2', 'doc3'],
-    Features: ['mdx'],
+    Shaders: ["2-hello-gradient", "3-uniforms", "5-shaping-functions"],
   },
 };
