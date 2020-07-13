@@ -8,7 +8,7 @@ author_image_url: https://avatars3.githubusercontent.com/u/124968?v=4
 tags: [comms]
 ---
 
-Join me on a _shader journey_ as I work my way through [Patricio Gonzalez Vivo](http://patriciogonzalezvivo.com/) and [Jen Lowe](http://jenlowe.net/)'s [Book of Shaders](https://thebookofshaders.com/).
+Join me on a _shader journey_ through [Patricio Gonzalez Vivo](http://patriciogonzalezvivo.com/) and [Jen Lowe](http://jenlowe.net/)'s [Book of Shaders](https://thebookofshaders.com/).
 
 ### What Are Shaders?
 
