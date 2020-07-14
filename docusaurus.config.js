@@ -74,6 +74,9 @@ module.exports = {
       ],
       copyright: `<a href="https://unlicense.org">Unlicensed</a> by <a href="https://stungeye.com">Kyle Geske</a> ${new Date().getFullYear()}. Website built with Docusaurus.`,
     },
+    prism: {
+      additionalLanguages: ["glsl"],
+    },
   },
   presets: [
     [

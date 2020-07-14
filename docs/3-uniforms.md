@@ -3,12 +3,60 @@ id: 3-uniforms
 title: 3.0 Uniforms
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ac euismod odio, eu consequat dui. Nullam molestie consectetur risus id imperdiet. Proin sodales ornare turpis, non mollis massa ultricies id. Nam at nibh scelerisque, feugiat ante non, dapibus tortor. Vivamus volutpat diam quis tellus elementum bibendum. Praesent semper gravida velit quis aliquam. Etiam in cursus neque. Nam lectus ligula, malesuada et mauris a, bibendum faucibus mi. Phasellus ut interdum felis. Phasellus in odio pulvinar, porttitor urna eget, fringilla lectus. Aliquam sollicitudin est eros. Mauris consectetur quam vitae mauris interdum hendrerit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+## Chapter 3 - The Book of Shaders
 
-Duis et egestas libero, imperdiet faucibus ipsum. Sed posuere eget urna vel feugiat. Vivamus a arcu sagittis, fermentum urna dapibus, congue lectus. Fusce vulputate porttitor nisl, ac cursus elit volutpat vitae. Nullam vitae ipsum egestas, convallis quam non, porta nibh. Morbi gravida erat nec neque bibendum, eu pellentesque velit posuere. Fusce aliquam erat eu massa eleifend tristique.
+The input "uniforms":
 
-Sed consequat sollicitudin ipsum eget tempus. Integer a aliquet velit. In justo nibh, pellentesque non suscipit eget, gravida vel lacus. Donec odio ante, malesuada in massa quis, pharetra tristique ligula. Donec eros est, tristique eget finibus quis, semper non nisl. Vivamus et elit nec enim ornare placerat. Sed posuere odio a elit cursus sagittis.
+- iResolution
+- iMouse
+- iTime
 
-Phasellus feugiat purus eu tortor ultrices finibus. Ut libero nibh, lobortis et libero nec, dapibus posuere eros. Sed sagittis euismod justo at consectetur. Nulla finibus libero placerat, cursus sapien at, eleifend ligula. Vivamus elit nisl, hendrerit ac nibh eu, ultrices tempus dui. Nam tellus neque, commodo non rhoncus eu, gravida in risus. Nullam id iaculis tortor.
+Called uniforms as their values are equal across pixel threads.
 
-Nullam at odio in sem varius tempor sit amet vel lorem. Etiam eu hendrerit nisl. Fusce nibh mauris, vulputate sit amet ex vitae, congue rhoncus nisl. Sed eget tellus purus. Nullam tempus commodo erat ut tristique. Cras accumsan massa sit amet justo consequat eleifend. Integer scelerisque vitae tellus id consectetur.
+## Example Shader Using Uniforms
+
+<iframe width="640" height="360" frameborder="0" src="https://www.shadertoy.com/embed/3tscz7?gui=true&t=10&paused=true&muted=false" allowfullscreen></iframe>
+
+This is an animated shader, so hover and press play.
+
+Trig functions are used to ease R & G by position and time. Mouse-click X changes rate of B easing.
+
+## The GLSL Code
+
+```glsl
+// Sinusoidal function shifted and scaled to range betwen 0 and 1.
+// See: https://www.desmos.com/calculator/w9jrdpvsmk
+float sinEase(float x) {
+	return 0.5 * sin(x) + 0.5;
+}
+
+// Function is automatically executed. Here it assigns a color to every pixel.
+void mainImage(
+    			out vec4 fragColor, // Output (r, g, b, a) pixel color
+				in vec2 fragCoord   // Input (x, y) image coordinate
+			  ) {
+    // Set scale according to how far mouse is from left side.
+    // 0.0 (full left) to 1.0 (full right)
+    // Mouse coordinate is set when left-mouse-button is clicked.
+    float blueRateScale = iMouse.x / iResolution.x;
+
+    // Ease back and forth 1 and 100 using time-based sine.
+    float stretchFactor = 99.0 * sinEase(iTime) + 1.0;
+
+    // Setting red and green pixel value.
+    // Ease back and forth between 0 and 1 based on pixel position
+    // and time-based stretch factor.
+    float red   = sinEase(fragCoord.x / stretchFactor);
+    float green = sinEase(fragCoord.y / stretchFactor);
+
+    // Blue will ease in and out based on time and the x position of the mouse.
+    // Ease speed increases from left to right.
+    float blue = abs(tan(iTime * blueRateScale));
+
+    // Set the pixel value based on the RGB calculated above.
+    fragColor = vec4(red,green,blue,1);
+}
+
+// Stung Eye 2020 - Unlicense - https://unlicense.org
+// This is free and unencumbered software released into the public domain.
+```
