@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import styles from "./styles.module.css";
-import ShaderCanvas from "@signal-noise/react-shader-canvas";
+import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
+
+//import ShaderCanvas from "@signal-noise/react-shader-canvas";
+let ShaderCanvas = () => <div />;
+
+if (ExecutionEnvironment.canUseDOM) {
+  ShaderCanvas = require("@signal-noise/react-shader-canvas").default;
+}
 
 const shader = `
 // Author @patriciogv - 2015
