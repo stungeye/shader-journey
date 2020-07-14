@@ -23,3 +23,48 @@
   margin: 0 calc(-1 * var(--ifm-pre-padding));
   padding: 0 var(--ifm-pre-padding);
 }
+
+.shades {
+  height: 270px;
+}
+
+.shades canvas,
+.shades .container {
+  position: absolute;
+}
+
+.shades canvas {
+  width: 100% !important;
+  left: 0;
+  top: 0;
+}
+
+.shades .container {
+  width: 500px;
+  left: 50%;
+  margin-left: -250px;
+}
+
+.shades .container .button {
+  color: #eee !important;
+}
+
+.shades .container .button:hover {
+  color: #111 !important;
+}
+
+.shades h1,
+.shades p {
+  text-shadow: 0.05em 0.05em 2px black;
+}
+
+html[data-theme="dark"] .shades h1,
+html[data-theme="dark"] .shades p {
+  color: #eee;
+}
+
+@media screen and (max-width: 450px) {
+  .shades h1 {
+    font-size: 2.1rem;
+  }
+}

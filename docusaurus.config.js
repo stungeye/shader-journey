@@ -28,15 +28,15 @@ module.exports = {
       style: "dark",
       links: [
         {
-          title: "Shader Journey",
+          title: "My Shader Journey",
           items: [
             {
-              label: "Shaders (Start Here)",
-              to: "docs/",
+              label: "Blog (Start Here)",
+              to: "blog/",
             },
             {
-              label: "Blog",
-              to: "blog/",
+              label: "Shaders",
+              to: "docs/",
             },
           ],
         },
