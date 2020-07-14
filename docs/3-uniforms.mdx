@@ -3,6 +3,31 @@ id: 3-uniforms
 title: 3.0 Uniforms
 ---
 
+import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
+
+export const Shader = function () {
+  if (ExecutionEnvironment.canUseDOM) {
+    const [width, setWidth] = React.useState(window.innerWidth * 0.5);
+    const shader = `precision mediump float; void main() { gl_FragColor = vec4(1, 0, 0, 1); }`;
+    let ShaderCanvas = null;
+    ShaderCanvas = require("@signal-noise/react-shader-canvas").default;
+    React.useEffect(() => {
+      const handleResize = () => {
+        setWidth(window.innerWidth * 0.5);
+      };
+      window.addEventListener("resize", handleResize);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }, []);
+    return <ShaderCanvas width={width} height={240} fragShader={shader} />;
+  } else {
+    return <></>;
+  }
+};
+
+<Shader />
+
 ## Chapter 3 - The Book of Shaders
 
 The input "uniforms":
@@ -15,7 +40,13 @@ Called uniforms as their values are equal across pixel threads.
 
 ## Example Shader Using Uniforms
 
-<iframe width="640" height="360" frameborder="0" src="https://www.shadertoy.com/embed/3tscz7?gui=true&t=10&paused=true&muted=false" allowfullscreen></iframe>
+<iframe
+  width="640"
+  height="360"
+  frameborder="0"
+  src="https://www.shadertoy.com/embed/3tscz7?gui=true&t=10&paused=true&muted=false"
+  allowfullscreen
+></iframe>
 
 This is an animated shader, so hover and press play.
 
