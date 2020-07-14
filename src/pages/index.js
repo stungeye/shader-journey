@@ -8,7 +8,7 @@ import styles from "./styles.module.css";
 import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
 
 //import ShaderCanvas from "@signal-noise/react-shader-canvas";
-let ShaderCanvas = () => <div />;
+let ShaderCanvas = () => <></>;
 
 if (ExecutionEnvironment.canUseDOM) {
   ShaderCanvas = require("@signal-noise/react-shader-canvas").default;
