@@ -93,7 +93,6 @@ void main() {
 const features = [
   {
     title: <>What is a Shader?</>,
-    imageUrl: "img/undraw_docusaurus_mountain.svg",
     description: (
       <>
         Shaders are instructions for computing images. They are written in
@@ -103,7 +102,6 @@ const features = [
   },
   {
     title: <>What is GLSL?</>,
-    imageUrl: "img/undraw_docusaurus_tree.svg",
     description: (
       <>
         GLSL is the official OpenGL Shading Language. It has a syntax based on
@@ -113,7 +111,6 @@ const features = [
   },
   {
     title: <>What is this Website?</>,
-    imageUrl: "img/undraw_docusaurus_react.svg",
     description: (
       <>
         This is a place for me to document my learning as I work through{" "}
@@ -186,6 +183,23 @@ function Home() {
             </div>
           </section>
         )}
+        <div className={clsx(styles.announcement, styles.announcementDark)}>
+          <div className={styles.announcementInner}>
+            Learn more on <Link to={useBaseUrl("/blog")}>the blog</Link> or dive
+            straight in to <Link to={useBaseUrl("/docs")}>the shaders</Link>.
+          </div>
+          <div className={styles.announcementInnerSmall}>
+            The cloudy shader used in the header is by{" "}
+            <a href="http://patriciogonzalezvivo.com/" target="_blank">
+              Patricio Gonzalez Vivo
+            </a>{" "}
+            based on code by{" "}
+            <a href="https://casual-effects.com/" target="_blank">
+              Morgan McGuire
+            </a>
+            .
+          </div>
+        </div>
       </main>
     </Layout>
   );

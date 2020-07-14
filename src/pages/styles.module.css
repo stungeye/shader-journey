@@ -35,3 +35,29 @@
   height: 200px;
   width: 200px;
 }
+
+.announcement {
+  font-weight: bold;
+  font-size: 24px;
+  padding: 48px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.announcementDark {
+  background-color: #20232a;
+  color: #fff;
+}
+
+.announcementInner {
+  margin: 0 auto;
+  max-width: 768px;
+}
+
+.announcementInnerSmall {
+  margin: 2rem auto 0 auto;
+  max-width: 768px;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: italic;
+}
