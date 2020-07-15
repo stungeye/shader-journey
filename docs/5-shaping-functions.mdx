@@ -9,13 +9,34 @@ GLSL includes a number of shaping functions like smoothstep. We can also build o
 
 ## Example Shader
 
-<iframe width="640" height="360" frameborder="0" src="https://www.shadertoy.com/embed/3tjcDm?gui=true&t=10&paused=true&muted=false" allowfullscreen></iframe>
+import ResponsiveShader from "@theme/ResponsiveShader";
+const shader = `precision mediump float; uniform vec2 u_resolution; uniform vec2 u_mouse; uniform float u_time; float PI = 3.14159265358979;
+float plot(vec2 st, float pct){ // (st = texture coordinates) (pct = percentage from 0.0 to 1.0)
+  const float width_factor = 0.007;
+  return  smoothstep(pct - width_factor, pct, st.y)
+          - smoothstep(pct, pct + width_factor, st.y);
+}
+void main() {
+const vec3 plot_colour = vec3(1.,0.,1.); // Colour of our plot.
+    vec2 st = gl_FragCoord.xy / u_resolution.xy;    // Normalize texture coordinates from 0.0 to 1.0 in x and y.
+    float y = sin(st.x * PI + u_time);        // y is a sinusoid based on x position and time.
+          y = 0.5 * y + 0.5;                 // Scale and offset y to center plot.
+    float plot = plot(st, y);                // Create a plot of y.
+    vec3 colour = vec3(y, y, y);             // Black to white background gradient. Also: vec3(y)
+         colour *= colour - plot;            // Remove gradient "below" where plot will be draw.
+         colour += plot * plot_colour;       // Paint the xy-plot.
+    gl_FragColor = vec4(colour, 1.0);           // Set pixel colour.
+}`;
+
+<ResponsiveShader maxWidth="530" height="320" fragShader={shader} />
 
 Sinusoidal background gradient with function plotted over top.
 
 This is an animated shader. Hover and press play.
 
 ## GLSL Source Code
+
+The following GLSL code assumes a WebGL platform. A ShaderToy port of code written [can be seen here](https://www.shadertoy.com/view/3tjcDm).
 
 ```glsl
 #define PI 3.14159265358979

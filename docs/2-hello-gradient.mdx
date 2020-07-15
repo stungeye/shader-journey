@@ -7,9 +7,21 @@ title: 2.0 Hello Gradient
 
 ## Example Shader
 
-<iframe width="640" height="360" frameborder="0" src="https://www.shadertoy.com/embed/tsBBz3?gui=true&t=10&paused=true&muted=false" allowfullscreen></iframe>
+import ResponsiveShader from "@theme/ResponsiveShader";
+const shader = `precision mediump float; uniform vec2 u_resolution; uniform vec2 u_mouse; uniform float u_time; 
+vec4 gradient(vec4 coord) {
+    vec2 uv = coord.xy / u_resolution.xy;
+    return vec4(uv.x, 0.364, 0.499, 1.0);
+}
+void main() {
+ gl_FragColor = gradient(gl_FragCoord);
+}`;
+
+<ResponsiveShader maxWidth="530" height="320" fragShader={shader} />
 
 ## GLSL Source Code
+
+The following GLSL code assumes a WebGL platform. A ShaderToy port of code written [can be seen here](https://www.shadertoy.com/view/tsBBz3).
 
 ```glsl
 // Color gradient based on a 2D coordinate.
@@ -39,3 +51,7 @@ void mainImage(
 // Stung Eye 2020 - Unlicense - https://unlicense.org
 // This is free and unencumbered software released into the public domain.
 ```
+
+## Differences between ShaderToy and WebGL
+
+## Unreal Engine Material
