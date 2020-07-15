@@ -3,31 +3,6 @@ id: 3-uniforms
 title: 3.0 Uniforms
 ---
 
-import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
-
-export const Shader = function () {
-  if (ExecutionEnvironment.canUseDOM) {
-    const [width, setWidth] = React.useState(window.innerWidth * 0.5);
-    const shader = `precision mediump float; void main() { gl_FragColor = vec4(1, 0, 0, 1); }`;
-    let ShaderCanvas = null;
-    ShaderCanvas = require("@signal-noise/react-shader-canvas").default;
-    React.useEffect(() => {
-      const handleResize = () => {
-        setWidth(window.innerWidth * 0.5);
-      };
-      window.addEventListener("resize", handleResize);
-      return () => {
-        window.removeEventListener("resize", handleResize);
-      };
-    }, []);
-    return <ShaderCanvas width={width} height={240} fragShader={shader} />;
-  } else {
-    return <></>;
-  }
-};
-
-<Shader />
-
 ## Chapter 3 - The Book of Shaders
 
 The input "uniforms":
@@ -40,50 +15,54 @@ Called uniforms as their values are equal across pixel threads.
 
 ## Example Shader Using Uniforms
 
-<pre>
-  iframe width="640" height="360" frameborder="0"
-  src="https://www.shadertoy.com/embed/3tscz7?gui=true&t=10&paused=true&muted=false"
-  allowfullscreen /iframe
-</pre>
+import ResponsiveShader from "@theme/ResponsiveShader";
+const shader =
+  "precision mediump float; float sinEase(float x) { return 0.5 * sin(x) + 0.5; } uniform vec2 u_resolution; uniform vec2 u_mouse; uniform float u_time; void main() { float blueRateScale = u_mouse.x / u_resolution.x; float stretchFactor = 99.0 * sinEase(u_time) + 1.0; float red   = sinEase( gl_FragCoord.x / stretchFactor); float green = sinEase( gl_FragCoord.y / stretchFactor); float blue = abs(tan(u_time * blueRateScale)); gl_FragColor = vec4(red,green,blue,1); }";
 
-This is an animated shader, so hover and press play.
+<ResponsiveShader maxWidth="530" height="320" fragShader={shader} />
 
-Trig functions are used to ease R & G by position and time. Mouse-click X changes rate of B easing.
+Trig functions are used to ease R & G by position and time. Mouse X position changes rate of B easing.
 
 ## The GLSL Code
 
+The following GLSL code assumes a WebGL platform. A ShaderToy port of code written [can be seen here](https://www.shadertoy.com/view/3tscz7).
+
 ```glsl
+#ifdef GL_ES
+precision mediump float;
+#endif
+
 // Sinusoidal function shifted and scaled to range betwen 0 and 1.
 // See: https://www.desmos.com/calculator/w9jrdpvsmk
 float sinEase(float x) {
 	return 0.5 * sin(x) + 0.5;
 }
 
-// Function is automatically executed. Here it assigns a color to every pixel.
-void mainImage(
-    			out vec4 fragColor, // Output (r, g, b, a) pixel color
-				in vec2 fragCoord   // Input (x, y) image coordinate
-			  ) {
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+uniform float u_time;
+
+void main() {
     // Set scale according to how far mouse is from left side.
     // 0.0 (full left) to 1.0 (full right)
     // Mouse coordinate is set when left-mouse-button is clicked.
-    float blueRateScale = iMouse.x / iResolution.x;
+    float blueRateScale = u_mouse.x / u_resolution.x;
 
     // Ease back and forth 1 and 100 using time-based sine.
-    float stretchFactor = 99.0 * sinEase(iTime) + 1.0;
+    float stretchFactor = 99.0 * sinEase(u_time) + 1.0;
 
     // Setting red and green pixel value.
     // Ease back and forth between 0 and 1 based on pixel position
     // and time-based stretch factor.
-    float red   = sinEase(fragCoord.x / stretchFactor);
-    float green = sinEase(fragCoord.y / stretchFactor);
+    float red   = sinEase( gl_FragCoord.x / stretchFactor);
+    float green = sinEase( gl_FragCoord.y / stretchFactor);
 
     // Blue will ease in and out based on time and the x position of the mouse.
     // Ease speed increases from left to right.
-    float blue = abs(tan(iTime * blueRateScale));
+    float blue = abs(tan(u_time * blueRateScale));
 
     // Set the pixel value based on the RGB calculated above.
-    fragColor = vec4(red,green,blue,1);
+    gl_FragColor = vec4(red,green,blue,1);
 }
 
 // Stung Eye 2020 - Unlicense - https://unlicense.org
