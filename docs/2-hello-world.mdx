@@ -1,0 +1,57 @@
+---
+id: 2-hello-world
+title: 2 - Hello World
+---
+
+## Chapter 2 - Hello World
+
+In [chapter 2 of the Book of Shaders](https://thebookofshaders.com/02/) we are introduced to the GLSL shading language:
+
+- GLSL is based on the C programming language. Some of the similarities and differences [can be seen here](https://www.khronos.org/opengl/wiki/Core_Language_%28GLSL%29).
+- Like C, every GLSL has a `void main()` function that is automatically invoked.
+- The standard C primitive types are availabe like `float`, `int`, and `bool`, but we also get new built-in types like those for 2d, 3d, and 4d vectors (`vec2`, `vec3`, `vec4`).
+- The vector types group 2, 3 or 4 normalized floats (range 0.0 to 1.0). A common use for `vec4` is to represent a colour with a R, G, B and alpha value.
+- Floating point precision can be specified. Lower precision means higher speeds at the cost of quality:
+  - `precision lowp float;`
+  - `precision mediump float;`
+  - `precision highp float;`
+- C-style preprocessor macro are also available for `#define`-ing globals and pre-compile conditional (`#ifdef` / `#endif`).
+- The built in variable `gl_Fragcolor` represents the colour that will be assigned to every pixel in your image.
+
+## Example Shader
+
+Let's write a simple shader that assigns every pixel in our image the colour red:
+
+```glsl
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+void main() {
+  // Set the color of each pixel to red.
+  gl_FragColor = vec4(1., 0., 0., 1.);
+}
+
+// Stung Eye 2020 - Unlicense - https://unlicense.org
+// This is free and unencumbered software released into the public domain.
+```
+
+## Shader Output
+
+import ResponsiveShader from "@theme/ResponsiveShader";
+
+<ResponsiveShader
+  maxWidth="530"
+  height="320"
+  fragShaderPath="/shaders/2.0-hello-world.frag"
+/>
+
+Depending on the implementation GLSL variables will not always auto-cast.
+
+So the following version of our all red shader might not work:
+
+```glsl
+void main() {
+  gl_FragColor = vec4(1, 0, 0, 0); // Some implementation may not cast these ints to floats.
+}
+```

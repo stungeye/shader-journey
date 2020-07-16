@@ -3,31 +3,97 @@ id: 3-uniforms
 title: 3 - Uniforms
 ---
 
-## Chapter 3 - The Book of Shaders
+## Chapter 3 - Uniforms
 
-The input "uniforms" in WebGL / ShaderToy:
+In [chapter 3 of the Book of Shaders](https://thebookofshaders.com/02/) we are introduced to the concept of uniform input:
 
-- `u_resolution` / `iResolution`
-- `u_mouse` / `iMouse`
-- `u_time` / `iTime`
+- Shader pixels are rendered in parallel and each thread is "blind" to the others.
+- To send inputs to these threads the input must be equal or "uniform" across all threads (and read only).
+- Uniforms exist for the texture resolution, mouse input, time and more.
+- The names of these uniforms change based on the implementation.
+- Here are a few of "uniforms" in WebGL:
+  - `uniform vec2 u_resolution` - Width and height of the canvas
+  - `uniform vec2 u_mouse` - Mouse position x / y
+  - `uniform float u_time` - Time in seconds since the shader loaded.
+- Here are similar uniforms available in [ShaderToy](https://www.shadertoy.com/) equivalent:
+  - `uniform vec3 iResolution` - Viewport pixel resolution
+  - `uniform vec4 iMouse` - Mouse cordinates x/y and left/right mouse clicks z/w.
+  - `uniform float iTime` - Shader playback time in seconds.
+- Notice that the resolution and mouse uniforms are different dimensions depending on the implementation. This is important to know if you are porting code between implementations.
+- In ShaderToy the uniforms are available by default, but with WebGL we need to specify them in our code, right after we specify the float precision:
 
-Called uniforms as their values are equal across pixel threads.
+```glsl
+#ifdef GL_ES
+precision mediump float;
+#endif
 
-## Example Shader Using Uniforms
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+uniform float u_time;
+```
+
+## Varying Built-Ins
+
+- Along with uniforms there are also built-in _varying_ variables. In the previous chapter we saw the built-in output varying `gl_FragColor`.
+- There is also a default output varying that specifies which x/y/z coordinates of the pixel the shader is working on called `gl_FragCoord`.
+
+## Example Shader Using Varying Built-Ins
+
+Let create a simple Shader using `gl_FragColor` and `gl_FragCoord` along with a single uniform `u_resolution`.
+
+```glsl
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+uniform vec2 u_resolution;
+
+// Color gradient based on a 2D coordinate.
+// Takes a vec2 (x, y) coordinate. Returns a vec4 (r, g, b, a) color.
+vec4 gradient(vec4 coord) {
+  // Normalized pixel coordinates (from 0 to 1) using the image
+  // dimensions pulled from vec2 iResolution.
+  vec2 uv = coord.xy / u_resolution.xy;
+
+  // Return vec4 (r, g, b, a) with red gradated by the pixel's x coord.
+  // Green, blue, and alpha are kept constant.
+  return vec4(uv.x, 0.364, 0.499, 1.0);
+
+  // Or, involve both the x and y axis:
+  // return vec4(uv.x, uv.y, 0.499, 1.0);
+}
+
+// Function is automatically executed. Here it assigns a color to every pixel.
+void main() {
+  // Set the color of each pixel to a gradient based its coordinates.
+  gl_FragColor = gradient(gl_FragCoord);
+}
+
+// Stung Eye 2020 - Unlicense - https://unlicense.org
+// This is free and unencumbered software released into the public domain
+```
+
+[Download this GLSL WebGL shader](/shaders/3.0-hello-gradient.frag).
+
+A ShaderToy port of code [can be seen here](https://www.shadertoy.com/view/tsBBz3).
+
+### Shader Output
+
+And here is our pretty gradient:
 
 import ResponsiveShader from "@theme/ResponsiveShader";
 
 <ResponsiveShader
   maxWidth="530"
   height="320"
-  fragShaderPath="/shaders/3.0-uniforms.frag"
+  fragShaderPath="/shaders/3.0-hello-gradient.frag"
 />
 
+## More Complex Example Shader
+
+Here's a more complete shader that also includes the `u_mouse` and `u_time` uniforms.
+
 Trig functions are used to ease R & G by position and time. Mouse X position changes rate of B easing.
-
-## The GLSL Code
-
-The following GLSL code assumes a WebGL platform. A ShaderToy port of code [can be seen here](https://www.shadertoy.com/view/3tscz7).
 
 ```glsl
 #ifdef GL_ES
@@ -71,4 +137,26 @@ void main() {
 // This is free and unencumbered software released into the public domain.
 ```
 
-[Download GLSL Source Code](/shaders/3.0-uniforms.frag)
+[Download this GLSL WebGL shader](/shaders/3.0-uniforms.frag).
+
+A ShaderToy port of code [can be seen here](https://www.shadertoy.com/view/3tscz7).
+
+### Shader Output
+
+Hover your mouse over the shader to change the rate at which it changes from a pink/blue/cyan colour scheme to a red/yellow/green scheme.
+
+<ResponsiveShader
+  maxWidth="530"
+  height="320"
+  fragShaderPath="/shaders/3.1-uniforms.frag"
+/>
+
+## Graident Shader in Unreal Engine
+
+Here's the blue/pink gradient shader implemented as an Unreal Engine material using their node-base language:
+
+![Unreal Graident Material Nodes](/img/3.0-unreal-gradient.jpg)
+
+And here's a gif of this material applied to a simple sphere:
+
+![Unreal Graident Material Output](/img/3.1-unreal-gradient.gif)
