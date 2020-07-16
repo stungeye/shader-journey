@@ -12,7 +12,7 @@ Join me on a _shader journey_ through [Patricio Gonzalez Vivo](http://patriciogo
 
 ### What Are Shaders?
 
-Shaders are written instructions for constructing images on a computer.
+Shaders are instructions for constructing images on a computer.
 
 Shaders are written such that each pixel can be calculated indepently, meaning that video-card GPUs can parallelize the generation of each pixel. This makes shaders incredibly fast, even for complex generated scenes.
 
@@ -30,16 +30,17 @@ Lots to learn before I could attempt to understand this code behind this shader:
 
 I'm going to document my learning as I work through each chapter in [The Book of Shaders](https://thebookofshaders.com/).
 
-The challenge:
+**The challenge:**
 
 - Write at least one well-commented GLSL shader per chapter.
 - Document my learning side-quests in math and colour theory.
 - Play around with recreating my GLSL shaders as [Unreal Engine node-based Materials](https://docs.unrealengine.com/en-US/Engine/Rendering/Materials/HowTo/Main_Material_Node/index.html).
 
-### Complete Thus Far
+### Chapters Complete Thus Far
 
 So far I've worked my way through chapters 1 through 5:
 
-- [Chapter 2 - Intro to Shaders / Hello Gradient](/docs/)
+- [Chapter 2 - Hello Gradient](/docs/)
 - [Chapter 3 - Uniforms](/docs/3-uniforms)
+- [Chapter 4 - Running Your Shaders](/docs/4-running-your-shaders)
 - [Chapter 5 - Shaping Functions](/docs/5-shaping-functions)
