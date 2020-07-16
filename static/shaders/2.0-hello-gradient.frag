@@ -1,26 +1,3 @@
----
-id: 2-hello-gradient
-title: 2.0 Hello Gradient
----
-
-## Chapter 2 - The Book of Shaders
-
-## Example Shader
-
-import ResponsiveShader from "@theme/ResponsiveShader";
-
-<ResponsiveShader
-  maxWidth="530"
-  height="320"
-  fragShaderPath="/shaders/2.0-hello-gradient.frag"
-/>
-;
-
-## GLSL Source Code
-
-The following GLSL code assumes a WebGL platform. A ShaderToy port of code [can be seen here](https://www.shadertoy.com/view/tsBBz3).
-
-```glsl
 #ifdef GL_ES
 precision mediump float;
 #endif
@@ -31,7 +8,7 @@ uniform float u_time;
 
 // Color gradient based on a 2D coordinate.
 // Takes a vec2 (x, y) coordinate. Returns a vec4 (r, g, b, a) color.
-vec4 gradient(vec2 coord) {
+vec4 gradient(vec4 coord) {
   // Normalized pixel coordinates (from 0 to 1) using the image
   // dimensions pulled from vec2 iResolution.
   vec2 uv = coord.xy / u_resolution.xy;
@@ -52,8 +29,3 @@ void main() {
 
 // Stung Eye 2020 - Unlicense - https://unlicense.org
 // This is free and unencumbered software released into the public domain.
-```
-
-## Differences between ShaderToy and WebGL
-
-## Unreal Engine Material

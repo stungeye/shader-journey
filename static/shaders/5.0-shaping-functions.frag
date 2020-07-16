@@ -1,31 +1,3 @@
----
-id: 5-shaping-functions
-title: 5.0 Shaping Functions
----
-
-## Chapter 5 - The Book of Shaders
-
-GLSL includes a number of shaping functions like smoothstep. We can also build our own custom ones using built in math functions like sin.
-
-## Example Shader
-
-import ResponsiveShader from "@theme/ResponsiveShader";
-
-<ResponsiveShader
-  maxWidth="530"
-  height="320"
-  fragShaderPath="/shaders/5.0-shaping-functions.frag"
-/>
-
-Sinusoidal background gradient with function plotted over top.
-
-This is an animated shader. Hover and press play.
-
-## GLSL Source Code
-
-The following GLSL code assumes a WebGL platform. A ShaderToy port of code [can be seen here](https://www.shadertoy.com/view/3tjcDm).
-
-```glsl
 #ifdef GL_ES
 precision mediump float;
 #endif
@@ -61,4 +33,3 @@ void main() {
 
 // Stung Eye 2020 - Unlicense - https://unlicense.org
 // This is free and unencumbered software released into the public domain.
-```
