@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
 
-const warningShader =
-  "precision mediump float; void main() { gl_FragColor = vec4(255,0,0,1); }";
+const warningShader = "void main() { gl_FragColor = vec4(255,0,0,1); }";
 
 const emptyShader = "void main() { gl_FragColor = vec4(0, 0, 0, 0); }";
 
