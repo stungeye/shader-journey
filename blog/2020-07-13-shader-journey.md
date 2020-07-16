@@ -22,7 +22,7 @@ GLSL, [the OpenGL Shader Language](https://www.khronos.org/opengl/wiki/Core_Lang
 
 Here's a shader by [Shader Toy](https://www.shadertoy.com) user [nimitz](https://www.shadertoy.com/user/nimitz) that recently blew my mind. This scene is built in 250 lines of GLSL, plus another 120 lines for the sound. Hit play on this shader. It's an animated scene.
 
-<iframe width="640" height="360" frameborder="0" src="https://www.shadertoy.com/embed/4ts3z2?gui=true&t=10&paused=true&muted=false" allowfullscreen></iframe>
+<iframe width="640" height="360" frameBorder="0" src="https://www.shadertoy.com/embed/4ts3z2?gui=true&t=10&paused=true&muted=false" allowFullScreen></iframe>
 
 Lots to learn before I could attempt to understand this code behind this shader: ray marching, volumeric noise, bump mapping, trig-foo. Heck, just the basics of thinking in parallel in GLSL. :)
 
