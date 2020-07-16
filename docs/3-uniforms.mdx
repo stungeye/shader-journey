@@ -19,13 +19,17 @@ import ResponsiveShader from "@theme/ResponsiveShader";
 const shader =
   "precision mediump float; float sinEase(float x) { return 0.5 * sin(x) + 0.5; } uniform vec2 u_resolution; uniform vec2 u_mouse; uniform float u_time; void main() { float blueRateScale = u_mouse.x / u_resolution.x; float stretchFactor = 99.0 * sinEase(u_time) + 1.0; float red   = sinEase( gl_FragCoord.x / stretchFactor); float green = sinEase( gl_FragCoord.y / stretchFactor); float blue = abs(tan(u_time * blueRateScale)); gl_FragColor = vec4(red,green,blue,1); }";
 
-<ResponsiveShader maxWidth="530" height="320" fragShader={shader} />
+<ResponsiveShader
+  maxWidth="530"
+  height="320"
+  fragShaderPath="/static/shaders/3.0-uniforms.frag"
+/>
 
 Trig functions are used to ease R & G by position and time. Mouse X position changes rate of B easing.
 
 ## The GLSL Code
 
-The following GLSL code assumes a WebGL platform. A ShaderToy port of code written [can be seen here](https://www.shadertoy.com/view/3tscz7).
+The following GLSL code assumes a WebGL platform. A ShaderToy port of code [can be seen here](https://www.shadertoy.com/view/3tscz7).
 
 ```glsl
 #ifdef GL_ES

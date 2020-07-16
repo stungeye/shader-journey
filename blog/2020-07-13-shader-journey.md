@@ -35,3 +35,11 @@ The challenge:
 - Write at least one well-commented GLSL shader per chapter.
 - Document my learning side-quests in math and colour theory.
 - Play around with recreating my GLSL shaders as [Unreal Engine node-based Materials](https://docs.unrealengine.com/en-US/Engine/Rendering/Materials/HowTo/Main_Material_Node/index.html).
+
+### Complete Thus Far
+
+So far I've worked my way through chapters 1 through 5:
+
+- [Chapter 2 - Intro to Shaders / Hello Gradient](/docs/)
+- [Chapter 3 - Uniforms](/docs/3-uniforms)
+- [Chapter 5 - Shaping Functions](/docs/5-shaping-functions)
