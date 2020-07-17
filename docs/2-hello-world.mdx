@@ -18,7 +18,7 @@ In [chapter 2 of the Book of Shaders](https://thebookofshaders.com/02/) we are i
 - C-style preprocessor macro are also available for `#define`-ing globals and pre-compile conditional (`#ifdef` / `#endif`).
 - The built in variable `gl_Fragcolor` represents the colour that will be assigned to every pixel in your image.
 
-## Example Shader
+## Building a Red Hot Shader
 
 Let's write a simple shader that assigns every pixel in our image the colour red:
 
@@ -36,7 +36,7 @@ void main() {
 // This is free and unencumbered software released into the public domain.
 ```
 
-## Shader Output
+### Shader Output
 
 import ResponsiveShader from "@theme/ResponsiveShader";
 
@@ -46,12 +46,19 @@ import ResponsiveShader from "@theme/ResponsiveShader";
   fragShaderPath="/shaders/2.0-hello-world.frag"
 />
 
-Depending on the implementation GLSL variables will not always auto-cast.
+## Differing GLSL Implementations
 
-So the following version of our all red shader might not work:
+**⚠️ Warning:** Depending on the implementation GLSL variables will not always auto-cast. So the following version of our all red shader might not work:
 
 ```glsl
 void main() {
   gl_FragColor = vec4(1, 0, 0, 0); // Some implementation may not cast these ints to floats.
 }
 ```
+
+For each of the WebGL targetted GLSL shader I create I'd also like to create a [ShaderToy](https://www.shadertoy.com/) port. I'll try my best to document the differences between the implementation and perhaps I'll create a naive regexp-based source code converter, to aid this porting.
+
+ShaderToy is an amazing community of GLSL shader artists with built-in source code editor. Inspiration galore!
+
+For an example of the kind of work you can discover on ShaderToy check out [this "day/night cycle of a mountain tree
+in the wind" shader](https://www.shadertoy.com/view/tdjyzz) by ShaderToy user [Maurogik](https://www.shadertoy.com/user/Maurogik). Realize that geometry for the entire scene (the tree, the leaves, the grass, the mountains, the clouds), along with the raymarched lighting and shadow map, are all written in GLSL.

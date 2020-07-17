@@ -36,11 +36,10 @@ I'm going to document my learning as I work through each chapter in [The Book of
 - Document my learning side-quests in math and colour theory.
 - Play around with recreating my GLSL shaders as [Unreal Engine node-based Materials](https://docs.unrealengine.com/en-US/Engine/Rendering/Materials/HowTo/Main_Material_Node/index.html).
 
-### Chapters Complete Thus Far
+### Chapters Complete So Far
 
 So far I've worked my way through chapters 1 through 5:
 
-- [Chapter 2 - Hello Gradient](/docs/)
+- Chatper 1 - Introductions (This Post)
+- [Chapter 2 - Hello Gradient](2-hello-world)
 - [Chapter 3 - Uniforms](/docs/3-uniforms)
-- [Chapter 4 - Running Your Shaders](/docs/4-running-your-shaders)
-- [Chapter 5 - Shaping Functions](/docs/5-shaping-functions)
