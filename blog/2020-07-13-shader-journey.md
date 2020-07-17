@@ -41,5 +41,5 @@ I'm going to document my learning as I work through each chapter in [The Book of
 So far I've worked my way through chapters 1 through 5:
 
 - Chatper 1 - Introductions (This Post)
-- [Chapter 2 - Hello Gradient](2-hello-world)
+- [Chapter 2 - Hello World](/docs/2-hello-world)
 - [Chapter 3 - Uniforms](/docs/3-uniforms)
