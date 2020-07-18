@@ -5,4 +5,34 @@ title: 4 - Running Your Shaders
 
 ## Chapter 4 - Running Your Shaders
 
-Content to come...
+In [chapter 4 of the Book of Shaders](https://thebookofshaders.com/02/) we learn how to display and edit our shaders across different platforms (Linux, Mac, Windows, Raspberry Pi, Browser).
+
+### GLSL Viewers and Editors
+
+In writting The Book of Shaders Patricio Gonzalez Vivo developed an ecosystem of GLSL-based tools for displaying and editing shaders:
+
+- [glslCanvas](https://github.com/patriciogonzalezvivo/glslCanvas) - Javascript library for displaying GLSL shaders on an HTML `canvas` element. Source code is loaded from a URL or a string.
+- [glslEditor](https://github.com/patriciogonzalezvivo/glslEditor) - In-browser fragment shader editor for GLSL. Uses the above glslCanvas for the built-in viewer.
+- [glslViwer](https://github.com/patriciogonzalezvivo/glslViewer) - Command line tool for GLSL shader generation / display. Think ImageMagick for shaders, but also hot-reloading viewer.
+- [glslViewer Sublime](https://packagecontrol.io/packages/glslViewer) - Sublime Text plugin for live coding GLSL shaders.
+- [openframe](https://openframe.io/) - Open-source platform for digital art with support for HDMI display using RaspberryPi.
+
+The glslEditor is lovely. Especially for its affordances like control widgets for live tweaking of vectors, numbers, and colours.
+
+You can play around with the editor at [editor.thebookofshaders.com](https://editor.thebookofshaders.com/). Although its ability to save to a URL and its integration to openframe.io seems to be broken due to [an SSL issue](https://github.com/patriciogonzalezvivo/glslEditor/issues/49).
+
+There are a bunch of other Shader editors, many of which are also online communities for sharing Shader art:
+
+- [ShaderToy](https://www.shadertoy.com/) - Editor and community. I'll be creating ShaderToy ports for all my WebGL shaders.
+- [Shaderoo](https://shaderoo.org/) - Similar editor and community.
+- [ShaderFrog](https://shaderfrog.com) - Another similar editor and community, but this editor is node-based not GLSL. Includes the concept of "composed shaders", which are shaders composed out of multiple more basic sub-shaders.
+- [ISF Editor](https://editor.isf.video/shaders/new) - Part of the open Interactive Shader Format for sharing GL shaders/metadata. The ability to create tweakable input parameters with a simple slider-based UI is nice! Also includes [a community](https://editor.isf.video/shaders).
+- [ShaderFactory](https://shader-factory.herokuapp.com/) - Vertex and fragment shader editor for uniform UI.
+- [KodeLife](https://hexler.net/products/kodelife) - Cross-platform real-time GPU shader editor, live-code performance tool and graphics prototyping sketchpad.
+- [SHADERed](https://github.com/dfranx/SHADERed) - Lightweight, cross-platform & full-featured desktop IDE for shaders. Supports both GLSL and [HLSL](https://en.wikipedia.org/wiki/High-Level_Shading_Language) shaders.
+
+I'm sure I'm missing a bunch, but that should do. 😝
+
+### Docusaurus
+
+#### Custom React Component
