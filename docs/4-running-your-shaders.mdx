@@ -7,21 +7,18 @@ title: 4 - Running Your Shaders
 
 In [chapter 4 of the Book of Shaders](https://thebookofshaders.com/02/) we learn how to display and edit our shaders across different platforms (Linux, Mac, Windows, Raspberry Pi, Browser).
 
-### GLSL Viewers and Editors
+## GLSL Viewers and Editors
 
 In writting The Book of Shaders Patricio Gonzalez Vivo developed an ecosystem of GLSL-based tools for displaying and editing shaders:
 
-- [glslCanvas](https://github.com/patriciogonzalezvivo/glslCanvas) - Javascript library for displaying GLSL shaders on an HTML `canvas` element. Source code is loaded from a URL or a string.
+- [glslCanvas](https://github.com/patriciogonzalezvivo/glslCanvas) - Javascript library for displaying GLSL shaders on an HTML `canvas` element. GLSL source code is loaded from a URL or a string.
 - [glslEditor](https://github.com/patriciogonzalezvivo/glslEditor) - In-browser fragment shader editor for GLSL. Uses the above glslCanvas for the built-in viewer.
-- [glslViwer](https://github.com/patriciogonzalezvivo/glslViewer) - Command line tool for GLSL shader generation / display. Think ImageMagick for shaders, but also hot-reloading viewer.
-- [glslViewer Sublime](https://packagecontrol.io/packages/glslViewer) - Sublime Text plugin for live coding GLSL shaders.
+- [glslViewer](https://github.com/patriciogonzalezvivo/glslViewer) - Command line tool for GLSL shader generation / display. Think ImageMagick for shaders, but also hot-reloading viewer.
 - [openframe](https://openframe.io/) - Open-source platform for digital art with support for HDMI display using RaspberryPi.
 
-The glslEditor is lovely. Especially for its affordances like control widgets for live tweaking of vectors, numbers, and colours.
+The glslEditor is lovely. Especially for its affordances like control widgets for live tweaking of vectors, numbers, and colours. You can play around with the editor at [editor.thebookofshaders.com](https://editor.thebookofshaders.com/). Although its ability to save to a URL and its integration to openframe.io seems to be broken due to [an SSL issue](https://github.com/patriciogonzalezvivo/glslEditor/issues/49).
 
-You can play around with the editor at [editor.thebookofshaders.com](https://editor.thebookofshaders.com/). Although its ability to save to a URL and its integration to openframe.io seems to be broken due to [an SSL issue](https://github.com/patriciogonzalezvivo/glslEditor/issues/49).
-
-There are a bunch of other Shader editors, many of which are also online communities for sharing Shader art:
+There are a bunch of other Shader editors worth noting, many of which are also online communities for sharing Shader art:
 
 - [ShaderToy](https://www.shadertoy.com/) - Editor and community. I'll be creating ShaderToy ports for all my WebGL shaders.
 - [Shaderoo](https://shaderoo.org/) - Similar editor and community.
@@ -33,6 +30,8 @@ There are a bunch of other Shader editors, many of which are also online communi
 
 I'm sure I'm missing a bunch, but that should do. 😝
 
-### Docusaurus
+## Docusaurus
 
-#### Custom React Component
+### Custom React Component
+
+### Preventing SSR for Shaders
