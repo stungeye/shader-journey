@@ -40,3 +40,4 @@ So far I've worked my way through chapters 1 through 5:
 - Chapter 1 - Introduction (This Page)
 - [Chapter 2 - Hello World](/docs/2-hello-world)
 - [Chapter 3 - Uniforms](/docs/3-uniforms)
+- [Chatper 4 - Running Your Shaders](/docs/4-running-your-shaders)
