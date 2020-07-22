@@ -77,7 +77,11 @@ module.exports = {
     prism: {
       additionalLanguages: ["glsl"],
     },
+    googleAnalytics: {
+      trackingID: "UA-76943-9",
+    },
   },
+  plugins: ["@docusaurus/plugin-google-analytics"],
   presets: [
     [
       "@docusaurus/preset-classic",
