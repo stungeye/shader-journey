@@ -7,7 +7,9 @@ title: 4 - Running Your Shaders
 
 In [chapter 4 of the Book of Shaders](https://thebookofshaders.com/02/) we learn how to display and edit our shaders across different platforms (Linux, Mac, Windows, Raspberry Pi, Browser).
 
-## GLSL Viewers and Editors
+Below I'll review some of the GLSL ecosystem and explain how I'm running GLSL shaders as React components on this site using Docusaurus.
+
+## Patricio's GLSL Tools
 
 In writting The Book of Shaders Patricio Gonzalez Vivo developed an ecosystem of GLSL-based tools for displaying and editing shaders:
 
@@ -17,6 +19,8 @@ In writting The Book of Shaders Patricio Gonzalez Vivo developed an ecosystem of
 - [openframe](https://openframe.io/) - Open-source platform for digital art with support for HDMI display using RaspberryPi.
 
 The glslEditor is lovely. Especially for its affordances like control widgets for live tweaking of vectors, numbers, and colours. You can play around with the editor at [editor.thebookofshaders.com](https://editor.thebookofshaders.com/). Although its ability to save to a URL and its integration to openframe.io seems to be broken due to [an SSL issue](https://github.com/patriciogonzalezvivo/glslEditor/issues/49).
+
+## Other Shader Editors and Communities
 
 There are a bunch of other Shader editors worth noting, many of which are also online communities for sharing Shader art:
 
@@ -32,6 +36,163 @@ I'm sure I'm missing a bunch, but that should do. 😝
 
 ## Docusaurus
 
+This website is built using an alpha release of [version 2 of Docusaurus](https://v2.docusaurus.io), a static site generator for documentation created by Facebook's open source team.
+
+I've been looking for a new way to create static notes for my courses at [RRC](https://rrc.ca) so I've been meaning to try out a few static site generators. Docusaurus looks to be a good option. A quick run down of the features:
+
+- Docusaurus is built around the [React](https://reactjs.org/) UI library.
+- Getting started is easy as [their docs](https://v2.docusaurus.io/docs/) are great.
+- Docusarus documents are written in [Markdown](https://en.wikipedia.org/wiki/Markdown) with configurations handled by JSON documents.
+- The flavour of Markdown is [mdx](https://mdxjs.com/), which means you can also embed custom React components in your docs.
+
+You can see [the markdown docs used to generate this site on Github](https://github.com/stungeye/shader-journey/tree/master/docs).
+
 ### Custom React Component
 
+Take a peek at the shaders running on [this page](/docs/3-uniforms). The shaders are running within the browser through WebGL by way of [glslCanvas](https://github.com/patriciogonzalezvivo/glslCanvas). I'm not using glslCanvas directly though, I've got it wrapped in two layers of React components.
+
+The first wrapper is [react-shader-canvas](https://github.com/signal-noise/react-shader-canvas) which makes it easy to display and control a glslCanvas with a React component. In its simplest form it works like this:
+
+```jsx
+import React from "react";
+import ShaderCanvas from "@signal-noise/react-shader-canvas";
+
+const shader = `
+  precision mediump float;
+  void main() {
+    gl_FragColor = vec4(1, 0, 0, 1);
+  }`;
+
+const RedView = () => (
+  <ShaderCanvas width={320} height={240} fragShader={shader} />
+);
+```
+
+I wanted two additional features beyond what react-shader-canvas offered:
+
+- Responsive resizing of the shader canvas depending on screen size.
+- Ability to load shader source code from an URL rather than from a string.
+
+To add these two features I wrote my own custom React component to wrap `<ShaderCavas>`. Adding a custom component to docusaurus was super easy. First I installed react-shader-canvas using yarn, and then I added a `ResponsiveShader.js` file to the docusaurus project folder `src\theme\` folder.
+
+[The full source code of my component can be seen here](https://github.com/stungeye/shader-journey/blob/master/src/theme/ResponsiveShader.js).
+
+The component is used from with `.mdx` docs like this:
+
+```jsx
+import ResponsiveShader from "@theme/ResponsiveShader";
+
+<ResponsiveShader
+  maxWidth="530"
+  height="320"
+  fragShaderPath="/shaders/3.0-hello-gradient.frag"
+/>;
+```
+
+The `fragShaderPath` is a relative path to the GLSL source code. In this case [/shaders/3.0-hello-gradient.frag](/shaders/3.0-hello-gradient.frag). Shader source can also be passed in directly as a string:
+
+```jsx
+import ResponsiveShader from "@theme/ResponsiveShader";
+
+const shader = `
+  precision mediump float;
+  void main() {
+    gl_FragColor = vec4(1, 0, 0, 1);
+  }
+`;
+
+<ResponsiveShader maxWidth="530" height="320" fragShader={shader} />;
+```
+
+### Responsive Resizing of Component
+
+The responsive resizing is handled by a `useEffect` hook that listens for the `window`'s `resize` event. The relevant code is:
+
+```jsx
+useEffect(() => {
+  const handleResize = () => {
+    // width is a state variable created with a useState hook.
+    // The responsiveWidth function returns number that is 80%
+    // of the first arg up to a maximum provided by the 2nd arg.
+    // maxWidth is a prop of this component.
+    setWidth(responsiveWidth(window.innerWidth, maxWidth));
+  };
+
+  window.addEventListener("resize", handleResize);
+
+  // This returned function is run when the component unmounts
+  // removing the resize listener.
+  return () => {
+    isMountedComponent.current = false; // Use a ref to mark the component as unmounted.
+    window.removeEventListener("resize", handleResize);
+  };
+});
+```
+
+### Loading Shader Source from a URL
+
+I'm using the fetch API to load shader source from a provided URL. Relevant code:
+
+```jsx
+const isMountedComponent = useRef(true); // Only true when component is mounted.
+// See above useEffect where this is set to false.
+
+const [fragShaderData, setFragShaderData] = useState(emptyShader);
+
+async function fetchShader(url) {
+  const response = await fetch(url);
+  const text = await response.text();
+  if (isMountedComponent.current) {
+    // Don't attempt to set state if the component is unmounted.
+    setFragShaderData(text);
+  }
+}
+
+// Load the fragment shader data either from prop or via a provided path.
+useEffect(() => {
+  if (fragShader) {
+    setFragShaderData(fragShader);
+  } else if (fragShaderPath) {
+    fetchShader(fragShaderPath);
+  } else {
+    setFragShaderData(warningShader);
+  }
+}, []);
+```
+
+The use of a ref to mark the component as mount/unmounted is a bit of a hack. I'm not sure why, but the component mounts and then unmounts itself on load, and that was causing a warning to be issued in the `fetchShader` function. Checking to see if the component is mounted before setting the `fragShaderData` variable fixed this. The specific warning was:
+
+`Can't perform a React state update on an unmounted component.`
+
 ### Preventing SSR for Shaders
+
+Just when I thought I was all done with this component I attempted to publish a live version of the site and the server-side rendering (SSR) failed.
+
+The error stated that "window is not defined". This made sense because the `window` object is only available in the browser, and not available when server-side rendering, while both my code and glslCanvas itself make use of the `window` object. At first I thought this was a show-stopper, but then I came across [this issue](https://github.com/facebook/docusaurus/issues/2494) that pointed out the ability to test for the presence of the browser with `ExecutionEnvironment.canUseDom`.
+
+This was the fix I needed, although I needed to require in glslCanvas with a `require` rather than an `import`, as `import` statements can't be nested. The relevant code is:
+
+```jsx
+import React, { useEffect, useState, useRef } from "react";
+import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
+
+// Some code removed for brevity.
+export const ResponsiveShader = function ({
+  maxWidth,
+  height,
+  fragShader,
+  fragShaderPath,
+  ...props
+}) {
+  // Only execute in the browser, not when server-side rendering.
+  if (ExecutionEnvironment.canUseDOM) {
+    let ShaderCanvas = require("@signal-noise/react-shader-canvas").default;
+
+    // Rest of component code goes here.
+  } else {
+    return <></>;
+  }
+};
+```
+
+You can see [the full component source code here](https://github.com/stungeye/shader-journey/blob/master/src/theme/ResponsiveShader.js).
