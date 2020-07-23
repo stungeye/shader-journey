@@ -1,11 +1,11 @@
 module.exports = {
   title: "My Shader Journey",
   tagline: "Through The Book of Shaders",
-  url: "https://your-docusaurus-test-site.com",
+  url: "https://shader-journey.netlify.app",
   baseUrl: "/",
   favicon: "img/favicon.ico",
-  organizationName: "facebook", // Usually your GitHub org/user name.
-  projectName: "docusaurus", // Usually your repo name.
+  organizationName: "stungeye", // Usually your GitHub org/user name.
+  projectName: "shader-journey", // Usually your repo name.
   themeConfig: {
     navbar: {
       title: "💎 Shader Journey",
