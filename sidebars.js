@@ -5,6 +5,7 @@ module.exports = {
       "2-hello-world",
       "3-uniforms",
       "4-running-your-shaders",
+      "5-shaping-functions",
     ],
   },
 };
