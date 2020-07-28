@@ -10,11 +10,10 @@ uniform float u_time;
 
 // Plot a line on Y using a value between 0.0-1.0
 // st = texture coordinates   pct = % from 0.0 to 1.0
-float plotIt(vec2 st, float pct){ 
-  const float width_factor = 0.006;
-
-  return  smoothstep(pct - width_factor, pct, st.y)
-          - smoothstep(pct, pct + width_factor, st.y);
+float plotIt(vec2 st, float pct){
+  const float halfSmoothWidth = 0.006;
+  return  smoothstep(pct - halfSmoothWidth, pct, st.y)
+          - smoothstep(pct, pct + halfSmoothWidth, st.y);
 }
 
 void main() {

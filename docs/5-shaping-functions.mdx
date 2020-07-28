@@ -3,33 +3,39 @@ id: 5-shaping-functions
 title: 5 - Shaping Functions
 ---
 
-## Chapter 5 - Shaping Functions
-
-GLSL includes a number of shaping functions like smoothstep. We can also build our own custom ones using built in math functions like sin.
-
-## Example Shader
-
 import ResponsiveShader from "@theme/ResponsiveShader";
 
-<ResponsiveShader
-  maxWidth="530"
-  height="320"
-  fragShaderPath="/shaders/5.0-shaping-functions.frag"
-/>
+## Chapter 5 - Shaping Functions
+
+In [chapter 5 of the Book of Shaders](https://thebookofshaders.com/05/) introduces us to the essential [kata](https://en.wikipedia.org/wiki/Kata) of shaders, shaping functions. GLSL includes a number of shaping functions like [smoothstep](https://thebookofshaders.com/glossary/?search=smoothstep). We can also build our own custom ones using built in math functions like sin.
+
+Like with the other chapters my shader explorations led to a number of rabbit holes, including [simple bit-mapped text output](https://www.shadertoy.com/view/4dtGD2) and [2D signed-distance functions](https://www.iquilezles.org/www/articles/distfunctions2d/distfunctions2d.htm). The end result was a gallery of shaping functions.
+
+## Smooth Lines and Sinusoids
+
+The first shader I made for this chapter was an animated sine wave. The background of the shader is a gradient produced by the sin function, with the actual sin function plotted over top. The plotting is anti-aliased using a neat trick shown in this chapter that uses use two `smoothstep` to produce a "rounded" line:
+
+```glsl
+// Plot a line on Y using a value between 0.0-1.0
+// st = texture coordinates   pct = % from 0.0 to 1.0
+float plotIt(vec2 st, float pct){
+  const float halfSmoothWidth = 0.006;
+  return  smoothstep(pct - halfSmoothWidth, pct, st.y)
+          - smoothstep(pct, pct + halfSmoothWidth, st.y);
+}
+```
+
+### Animated Sine Wave - Shader
 
 <ResponsiveShader
-  maxWidth="530"
-  height="530"
-  fragShaderPath="/shaders/5.2-shaping-gallery.frag"
+  maxWidth="350"
+  height="350"
+  fragShaderPath="/shaders/5.0-animated-sine-wave.frag"
 />
 
-Sinusoidal background gradient with function plotted over top.
+### Animated Sine Wave - GLSL Source
 
-This is an animated shader. Hover and press play.
-
-## GLSL Source Code
-
-The following GLSL code assumes a WebGL platform. A ShaderToy port of code [can be seen here](https://www.shadertoy.com/view/3tjcDm).
+The following GLSL code assumes a WebGL platform.
 
 ```glsl
 #ifdef GL_ES
@@ -44,9 +50,9 @@ uniform float u_time;
 // Plot a line on Y using a value between 0.0-1.0
 // st = texture coordinates   pct = % from 0.0 to 1.0
 float plotIt(vec2 st, float pct){
-  const float width_factor = 0.006;
-  return  smoothstep(pct - width_factor, pct, st.y)
-          - smoothstep(pct, pct + width_factor, st.y);
+  const float halfSmoothWidth = 0.006;
+  return  smoothstep(pct - halfSmoothWidth, pct, st.y)
+          - smoothstep(pct, pct + halfSmoothWidth, st.y);
 }
 
 void main() {
@@ -72,3 +78,17 @@ void main() {
 // Stung Eye 2020 - Unlicense - https://unlicense.org
 // This is free and unencumbered software released into the public domain.
 ```
+
+> [Download `5.0-animated-sine-wave.frag`](/shaders/5.0-animated-sine-wave.frag).
+
+## Even Smoother Lines
+
+<ResponsiveShader
+  maxWidth="530"
+  height="530"
+  fragShaderPath="/shaders/5.2-shaping-gallery.frag"
+/>
+
+Sinusoidal background gradient with function plotted over top.
+
+This is an animated shader. Hover and press play.
