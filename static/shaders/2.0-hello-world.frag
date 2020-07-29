@@ -7,5 +7,5 @@ void main() {
   gl_FragColor = vec4(1., 0., 0., 1.);
 }
 
-// Stung Eye 2020 - Unlicense - https://unlicense.org
+// Kyle Geske - stungeye.com - Unlicense 2020 - https://unlicense.org
 // This is free and unencumbered software released into the public domain.

@@ -25,5 +25,5 @@ void main() {
   gl_FragColor = gradient(gl_FragCoord);
 }
 
-// Stung Eye 2020 - Unlicense - https://unlicense.org
+// Kyle Geske - stungeye.com - Unlicense 2020 - https://unlicense.org
 // This is free and unencumbered software released into the public domain.

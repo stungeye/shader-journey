@@ -4,7 +4,7 @@ title: 1 - Introduction
 description: Join me on a shader journey through Patricio Gonzalez Vivo and Jen Lowe's Book of Shaders.
 ---
 
-Join me on a _shader journey_ through [Patricio Gonzalez Vivo](http://patriciogonzalezvivo.com/) and [Jen Lowe](http://jenlowe.net/)'s [Book of Shaders](https://thebookofshaders.com/).
+Join me on a **shader journey** through [Patricio Gonzalez Vivo](http://patriciogonzalezvivo.com/) and [Jen Lowe](http://jenlowe.net/)'s [Book of Shaders](https://thebookofshaders.com/).
 
 ## Chapter 1 - The Book of Shaders
 

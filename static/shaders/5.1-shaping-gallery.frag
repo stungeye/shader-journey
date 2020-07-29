@@ -1,10 +1,33 @@
+/*
+   _____ _                 _              
+  / ____| |               (_)             
+ | (___ | |__   __ _ _ __  _ _ __   __ _  
+  \___ \| '_ \ / _` | '_ \| | '_ \ / _` | 
+  ____) | | | | (_| | |_) | | | | | (_| | 
+ |_____/|_| |_|\__,_| .__/|_|_| |_|\__, | 
+ |  ____|           | || | (_)      __/ | 
+ | |__ _   _ _ __   |_|| |_ _  ___ |___/  
+ |  __| | | | '_ \ / __| __| |/ _ \| '_ \ 
+ | |  | |_| | | | | (__| |_| | (_) | | | |
+ |_|___\__,_|_|_|_|\___|\__|_|\___/|_| |_|
+  / ____|     | | |                       
+ | |  __  __ _| | | ___ _ __ _   _        
+ | | |_ |/ _` | | |/ _ \ '__| | | |       
+ | |__| | (_| | | |  __/ |  | |_| |       
+  \_____|\__,_|_|_|\___|_|   \__, |       
+                              __/ |       
+                             |___/        
+
+A gallery of GLSL shaping functions.
+*/
+
 #ifdef GL_ES
 precision mediump float;
 #endif
 
 #define PI 3.1415926535897
 #define DISPLAY_TIME_IN_SECONDS 6.
-#define NUMBER_OF_FUNCTIONS 6
+#define NUMBER_OF_FUNCTIONS 8 
 
 uniform vec2 u_resolution;
 uniform float u_time;
@@ -83,18 +106,18 @@ float pickFunction(float x) {
         y = abs(sin(2. * PI * x));
     } else if (index == 3) {         // 1/2 + (tan((pi * x) - pi/2) / 10)
         y = tan(x * PI - (.5 * PI)); 
-    	  y = .1 * y + .5; 
+    	y = .1 * y + .5; 
 
         // Don't antialias the infinity that lies just beyond 0 and 1.
-        if (x < 0.) { 
-            y = 0.0;
-        }
-        if (x > 1.) {
-          y = 100.;
-        }
+        if (x < 0.) { y = 0.0; }
+        if (x > 1.) { y = 100.; }
     } else if (index == 4) {         // x^5
         y = pow(x, 5.);
-    } else if (index == 5) {  // Found: https://www.shadertoy.com/view/3sKSWc
+    } else if (index == 5) {         // smoothstep(0.1, 0.9, x) 
+        y = smoothstep(.1, .9, x);
+    } else if (index == 6) {         // smoothstep(0.3, 0.5, x) - smoothstep(0.5, 0.7, x) 
+        y = smoothstep(.3, .5, x) - smoothstep(.5, .7, x);
+    } else if (index == 7) {         // Found: https://www.shadertoy.com/view/3sKSWc
         float time = mod(u_time, 100.);
         x *= 5.;
         y = sin(x * sin(time * .2)) * sin(6. * x + cos(time * time * .001)) * .5  + .5;
@@ -177,7 +200,31 @@ float pickText( in vec2 uv )
         s[5] = CH_COMM;
         s[6] = CH_5;
         s[7] = CH_RPAR;
-    } else if (index == 5) {   // See pickFunction above. :)
+    } else if (index == 5) {   // smoothstep(0.1, 0.9, x)
+        s[0] = CH_S;
+        s[1] = CH_M;
+        s[2] = CH_O;
+        s[3] = CH_O;
+        s[4] = CH_T;
+        s[5] = CH_H;
+        s[6] = CH_S;
+        s[7] = CH_T;
+        s[8] = CH_E;
+        s[9] = CH_P;
+    } else if (index == 6) {   // // smoothstep(0.3, 0.5, x) - smoothstep(0.5, 0.7, x)
+        s[0] = CH_QUOT;
+        s[1] = CH_S;
+        s[2] = CH_M;
+        s[3] = CH_O;
+        s[4] = CH_O;
+        s[5] = CH_T;
+        s[6] = CH_H;
+        s[7] = CH_L;
+        s[8] = CH_I;
+        s[9] = CH_N;
+        s[10] = CH_E;
+        s[11] = CH_QUOT;
+    } else if (index == 7) {   // See pickFunction above. :)
         s[0] = CH_S;
         s[1] = CH_E;
         s[2] = CH_E;
@@ -192,9 +239,8 @@ float pickText( in vec2 uv )
         s[11] = CH_COLN;
         s[12] = CH_RPAR;
     }
-    
-    return textArray(uv, s);
 
+    return textArray(uv, s);
 }
 
 // Used for smooth function plotting see: https://www.shadertoy.com/view/3sKSWc
@@ -243,9 +289,9 @@ float progressBar(vec2 st) {
 // Signed distance circle with an offset. See: https://www.shadertoy.com/view/3ltSW2
 float sdCircle(vec2 p, float r, vec2 offset)
 {
-    p.x -= offset.x;
-    p.y -= offset.y;
-    return (1. - sign(length(p) - r)) / 2.;
+    p.xy -= offset.xy;                      // Position the circle with an x/y offset.
+    p.y *= u_resolution.y / u_resolution.x; // Unskew circle based on aspect ratio.
+    return (1. - sign(length(p) - r)) / 2.; // Are we inside (1) or outside (0) the circle?
 }
 
 void main() {
@@ -256,20 +302,23 @@ void main() {
   const vec3 circleColour = vec3(0.850,0.591,0.227);
     
   vec2 st = gl_FragCoord.xy / u_resolution.xy; // Normalize texture coords from 0.0 to 1.0.
+  vec2 tt = gl_FragCoord.xy / u_resolution.yy; // Normalize based only on y resolution for text.
 
   float y = pickFunction(st.x);     // Pick and calculate a function.
-  float text = pickText(st);        // Pick and create the bitmapped text. 
+  float text = pickText(tt);        // Pick and create the bitmapped text and offset shadow.
+  float textShadow = pickText(tt + vec2(-.003, .004)); 
   float progress = progressBar(st); // Render the progress bar.
   float plot = plotIt(st, y);       // Smooth plot the function.
 
   // Plot the circle easing it's position by the selected function across three second intervals.
-  float circle = sdCircle(st, 0.05, vec2(pickFunction(mod(u_time, 3.) / 3.)));
+  float circle = sdCircle(st, 0.04, vec2(pickFunction(mod(u_time, 3.) / 3.)));
     
   float gradient  = min(y, 1.0);      // Black to white background gradient. 
         gradient *= (1. - plot);      // Remove gradient "below" where plot will be drawn.
-        gradient *= (1. - text);      // Remove gradient "below" where text will be drawn.
         gradient *= (1. - progress);  // Remove gradient "below" where the progress bar will be drawn.
         gradient *= (1. - circle);    // Remove gradient "below" where the circle will be drawn.
+        gradient *= (1. - text);      // Remove gradient "below" where text will be drawn.
+        gradient *= (1. - textShadow);// Remove gradient to leave a text shadow.
         gradient  = max(gradient, 0.0); // Negative values become zero.
       
   // Putting everything together with colours.
@@ -282,3 +331,5 @@ void main() {
   gl_FragColor = vec4(colour, 1.);  // Set pixel colour.
 }
 
+// Kyle Geske - stungeye.com - Unlicense 2020 - https://unlicense.org
+// This is free and unencumbered software released into the public domain.
