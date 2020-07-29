@@ -146,14 +146,14 @@ Before we get to the source code, here are some of the rabbit holes I followed:
 - **Ultra Smooth Function Plotting** - The `smoothstep`-based plotting worked well until I got to functions like `tan` that included step curves, at which point the plot line would go jagged or discontinuous. I eventually stumbled across and then use [this distance-based anti-aliased technique](https://www.shadertoy.com/view/3sKSWc). I fully admit that I don't actually understand how this code works, but the plot lines it produces are silky smooth!
 - **Text Rendering** - I wanted to be able to print out the current function being visulized as text, but GLSL doesn't have native text output. I played around with [font textures](https://www.shadertoy.com/view/MtySzd) but settled on [a bitmapped-font technique](https://www.shadertoy.com/view/4dtGD2). This could super handy for debugging too! Big discovery: The version OpenGL / GLSL support by WebGL doesn't allow for array literals, so building the text string arrays was a chore. Not sure if this is an issue with ShaderToy?
 - **2D Signed Distance Circle Easing** - While trying to figure out how the above mentioned ultra smooth plotting worked I stumbled across [signed distance functions](https://jvns.ca/blog/2020/03/15/writing-shaders-with-signed-distance-functions/), which look to be a lovely way to represent and display 2D and 3D primitives. [Inigo Quilez's articles on the subject](https://www.iquilezles.org/www/index.htm) seem like a treasure trove. The orange circle in the gallery shader was inspired by [iq's 2D SDF functions page](https://www.iquilezles.org/www/articles/distfunctions2d/distfunctions2d.htm).
-- **Normalizing Coordinates** - Normalized texture coordinates in GLSL shaders are often labeled `uv` or `st`, with different coders normalizing the ranges in different ways. This blog post on [GLSL Programming Tricks] helped me use two different normalizations in the gallery (one for the text and one for everything else):
+- **Normalizing Coordinates** - Normalized texture coordinates in GLSL shaders are often labeled `uv` or `st`, with different coders normalizing the ranges in different ways. This blog post on [GLSL Programming Tricks](https://shadertoyunofficial.wordpress.com/2019/01/02/programming-tricks-in-shadertoy-glsl/) helped me use two different normalizations in the gallery (one for the text and one for everything else):
 
 ```glsl
   vec2 st = gl_FragCoord.xy / u_resolution.xy; // Normalize texture coords from 0.0 to 1.0.
   vec2 tt = gl_FragCoord.xy / u_resolution.yy; // Normalize based only on y resolution for text.
 ```
 
-From the blog post, some different normalization tactics:
+From the programming tricks blog post, some different normalization tactics:
 
 ```glsl
 vec2 R = u_resolution.xy,
