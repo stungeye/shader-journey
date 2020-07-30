@@ -144,16 +144,17 @@ This shader took me a few days to hack together, but boy did I learn a lot!
 Before we get to the source code, here are some of the rabbit holes I followed:
 
 - **Ultra Smooth Function Plotting** - The `smoothstep`-based plotting worked well until I got to functions like `tan` that included step curves, at which point the plot line would go jagged or discontinuous. I eventually stumbled across and then use [this distance-based anti-aliased technique](https://www.shadertoy.com/view/3sKSWc). I fully admit that I don't actually understand how this code works, but the plot lines it produces are silky smooth!
-- **Text Rendering** - I wanted to be able to print out the current function being visulized as text, but GLSL doesn't have native text output. I played around with [font textures](https://www.shadertoy.com/view/MtySzd) but settled on [a bitmapped-font technique](https://www.shadertoy.com/view/4dtGD2). This could super handy for debugging too! Big discovery: The version OpenGL / GLSL support by WebGL doesn't allow for array literals, so building the text string arrays was a chore. Not sure if this is an issue with ShaderToy?
+- **Text Rendering** - I wanted to be able to print out the current function being visulized as text, but GLSL doesn't have native text output. I played around with [font textures](https://www.shadertoy.com/view/MtySzd) but settled on [a bitmapped-font technique](https://www.shadertoy.com/view/4dtGD2). This could be super handy for debugging too!
+- **Array Constructors:** WebGL is built on the OpenGL 2.0 spec, this means Googling for code samples sometimes fails because OpenGL 3.x or 4.x features won't work. I wanted to store arrays of bitmapped characters to build the display strings but 2.0 doesn't allow for array literals or [array constructors](https://www.khronos.org/opengl/wiki/Data_Type_%28GLSL%29#Array_constructors). Building the text string arrays was a chore. This is not an issue in ShaderToy, but I didn't bother refactoring with literals for the ShaderToy port.
 - **2D Signed Distance Circle Easing** - While trying to figure out how the above mentioned ultra smooth plotting worked I stumbled across [signed distance functions](https://jvns.ca/blog/2020/03/15/writing-shaders-with-signed-distance-functions/), which look to be a lovely way to represent and display 2D and 3D primitives. [Inigo Quilez's articles on the subject](https://www.iquilezles.org/www/index.htm) seem like a treasure trove. The orange circle in the gallery shader was inspired by [iq's 2D SDF functions page](https://www.iquilezles.org/www/articles/distfunctions2d/distfunctions2d.htm).
-- **Normalizing Coordinates** - Normalized texture coordinates in GLSL shaders are often labeled `uv` or `st`, with different coders normalizing the ranges in different ways. This blog post on [GLSL Programming Tricks](https://shadertoyunofficial.wordpress.com/2019/01/02/programming-tricks-in-shadertoy-glsl/) helped me use two different normalizations in the gallery (one for the text and one for everything else):
+- **Normalizing Coordinates** - Normalized texture coordinates in GLSL shaders are often labeled `uv` or `st`, with different coders normalizing the ranges in different ways. This blog post on [GLSL Programming Tricks](https://shadertoyunofficial.wordpress.com/2019/01/02/programming-tricks-in-shadertoy-glsl/) helped me figure out how to use two different coordinate normalizations in the shader (one for the text and one for everything else):
 
 ```glsl
   vec2 st = gl_FragCoord.xy / u_resolution.xy; // Normalize texture coords from 0.0 to 1.0.
   vec2 tt = gl_FragCoord.xy / u_resolution.yy; // Normalize based only on y resolution for text.
 ```
 
-From the programming tricks blog post, some different normalization tactics:
+From [that post](https://shadertoyunofficial.wordpress.com/2019/01/02/programming-tricks-in-shadertoy-glsl/), here are a few different coordinate normalization tactics that allow you to change the shader's point of origin (x == 0 and y == 0):
 
 ```glsl
 vec2 R = u_resolution.xy,
@@ -163,7 +164,13 @@ vec2 st = fragCoord / R.y;                     // [0,1] vertically
      st = ( 2.*fragCoord - R ) / min(R.x,R.y); // [-1,1] along the shortest side
 ```
 
+Notice that the pixel position `fragCoord` is normalized by the resolution to fall within a range of shader coordinates. Shader coders usually use the variable names `uv` or `st` for these texture coordinate vectors, but there appears to be a subtle difference between the two that I don't get yet. The variable names `uv` and `st` don't _stand_ for anything. Each character in the name refers to one of the floats contained in the `vec2`. Instead of x/y coordinates we have u/v coordinates or s/t coordinates.
+
 ### Shaping Gallery - GLSL Code
+
+Here's the WebGL GLSL 2.x source for the above shaping gallery shader. I've tried my best to break things down into named and commented functions.
+
+There's a lot of code here. Many functions. Skip to the bottom first and read through `main()` before exploring the rest.
 
 ```glsl
 #ifdef GL_ES
@@ -479,4 +486,4 @@ void main() {
 
 > [Download `5.1-shaping-gallery.frag`](/shaders/5.1-shaping-gallery.frag) or [interact with the ShaderToy port of this shader](https://www.shadertoy.com/view/WlfBzH).
 
-Up next we'll be exploring colours, gradients, and colour spaces.
+[Up next](https://thebookofshaders.com/06/) we'll be exploring colours, gradients, and colour spaces.
